@@ -65,6 +65,12 @@ def main():
         validation_data=ds_test
     )
 
+    results = model.evaluate(ds_test)
+
+    res_txt = "Loss: {:.2f}\nAccuracy: {:.2f}".format(results[0], results[1])
+    with open("results_mlp.txt", "w") as f:
+        f.write(res_txt)
+
 
 if __name__ == '__main__':
     main()

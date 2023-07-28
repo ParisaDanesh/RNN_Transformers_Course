@@ -49,4 +49,7 @@ loss, acc = model.evaluate(
     batch_size=batch_size
 )
 
-print("Accuracy: {:.1f}".format(100.0 * acc))
+res_txt = "Loss: {:.2f}\nAccuracy: {:.1f}".format(loss, 100.0 * acc)
+with open("results_rnn.txt", "w") as f:
+    f.write(res_txt)
+
