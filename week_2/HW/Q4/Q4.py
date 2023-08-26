@@ -1,4 +1,4 @@
-# Method 1
+from keras.utils import to_categorical
 from keras.callbacks import CSVLogger
 from tensorflow import keras
 from keras import layers
@@ -30,7 +30,11 @@ text_vectorization.adapt(text_only_train_ds)
 
 inputs = keras.Input(shape=(1,), dtype=tf.string, name='string')
 x = text_vectorization(inputs)
-embedded = layers.Embedding(input_dim=max_tokens, output_dim=256)(x)
+
+# embedded = layers.Embedding(input_dim=max_tokens, output_dim=256)(x)
+# embedded = tf.keras.layers.CategoryEncoding(num_tokens=max_tokens, output_mode='one_hot')(x)
+embedded = tf.one_hot(x, depth=256, name="one_hot")
+
 x = layers.LSTM(32)(embedded)
 outputs = layers.Dense(1, activation="sigmoid")(x)
 model = keras.Model(inputs, outputs)
@@ -41,8 +45,8 @@ model.compile(optimizer="adam",
 
 model.summary()
 
-csv_logger = CSVLogger('q3_method_1.csv', append=True, separator=';')
+csv_logger = CSVLogger('q4.csv', append=True, separator=';')
 
 model.fit(train_ds, validation_data=test_ds, epochs=10, callbacks=[csv_logger])
 
-model.save('./q3_method_1.keras')
+model.save('./q4.keras')
